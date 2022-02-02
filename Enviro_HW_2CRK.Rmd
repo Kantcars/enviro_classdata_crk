@@ -1,0 +1,118 @@
+---
+title: "envirodata_hw2"
+author: "Carson"
+date: "1/26/2022"
+output: html_document
+---
+
+#bring in packages needed
+```{r}
+library(readxl)
+library(tidyverse)
+library(Rcpp)
+```
+
+
+#sets data location
+```{r}
+stream_data_loc <- "C:/Users/81hoc/Downloads/WY2015_stream_chem.xlsx"
+```
+
+# reads in excel sheets
+```{r}
+reynolds <- read_excel(stream_data_loc, sheet = "Reynolds Mtn")
+dobson <- read_excel(stream_data_loc, sheet = "Dobson")
+johnston <- read_excel(stream_data_loc, sheet = "Johnston")
+tollgate <- read_excel(stream_data_loc, sheet = "Tollgate")
+outlet <- read_excel(stream_data_loc, sheet = "Outlet")
+```
+
+#create master list
+```{r}
+master_list <- rbind(reynolds, dobson, johnston, tollgate, outlet)
+```
+
+#writes master list to a csv
+```{r}
+write.csv(master_list, "WY2015_streamchem.csv")
+```
+
+```{r}
+WY15_SC <- read.csv("C:/Users/81hoc/OneDrive/Desktop/WY2015_streamchem.csv")
+view(WY15_SC)
+```
+
+
+```{r}
+#data.folder("C:/Users/81hoc/Downloads/WY2015_stream_chem")
+```
+
+
+```{r}
+WC_files <- list.files(data.folder, pattern = ".xlsx")
+```
+
+
+```{r}
+WC_master <- NULL
+```
+
+# for loop checking the collumn names
+```{r}
+for(i in 1:lenght(master.list)) {
+   RM <- read_excel(paste0(data.folder, WC_files[i]), sheet = "Reynolds Mtn")
+  Dob <- read_excel(paste0(data.folder, WC_files[i]), sheet = "Dobson")
+  John <- read_excel(paste0(data.folder, WC_files[i]), sheet = "Johnston")
+  Toll <- read_excel(paste0(data.folder, WC_files[i]), sheet = "Tollgate")
+  Out <- read_excel(paste0(data_folder, WC.files[i]), sheet = "Outlet")
+  
+  if(all(colnames(RM) == colnames(Dob)) != TRUE) {
+    print(WChem_files[i])
+    print("Error in colnames for Dobson")
+    break
+   }
+  if(all(colnames(RM) == colnames(John)) != TRUE) {
+    print(WChem_files[i])
+    print("Error in colnames for Johnston")
+    break
+  }
+  if(all(colnames(RM) == colnames(Toll)) != TRUE) {
+    print(WChem_files[i])
+    print("Error in colnames for Tollgate")
+    break
+  }
+  if(all(colnames(RM) == colnames(Out)) != TRUE) {
+    print(WChem_files[i])
+    print("Error in colnames for Outlet")
+    break
+  }
+}
+```
+
+
+```{r}
+WY.fileloc <- ("C:/Users/81hoc/Downloads/WY2015_stream_chem.xlsx")
+```
+
+# uses dplyr package and %>% is the pipeline function
+```{r}
+WC.2015 <- WY.fileloc  %>%
+                excel_sheets() %>%
+                set_names() %>%
+                map_dfr(read_excel,
+                          na = c("NA"),
+                          col_types=c("text"),
+                          path = WY2015_file_loc,
+                          .id = "original_file")
+```
+
+#check dataframe structure
+```{r}
+str(WC.2015)
+```
+
+
+```{r}
+ggplot(WC.2015)
+```
+
