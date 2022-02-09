@@ -1,0 +1,53 @@
+##--Assignment 4---Biol6692--##
+##--creating a publication grade plot--##
+
+#bring in packages needed for the plot
+library(ggplot2)
+library(dplyr)
+
+#bring in the data being used.
+rc_data <- read.csv("C:/Users/81hoc/Downloads/RCrk_data.csv")
+
+#use colnames to change and fix the first column in the data set
+colnames(rc_data)[1] <- "ID"
+#[1] indicates it's the first column in the dataset
+
+#create the plot theme
+p_theme <- theme_minimal() + #complete themes that control all non data in display
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0))) + # this will move the axis away from the plot
+  theme(axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+  #this function removes the grid lines from the plot
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  #changes the axis text size
+  theme(axis.text = element_text(size = 12)) + 
+  #changes axis title size
+  theme(axis.title = element_text(size = 14)) +
+  #changes the plot title text size
+  theme(plot.title = element_text(size = 18)) +
+  #changes the plot subtitle size
+  theme(plot.subtitle = element_text(size = 14))
+  
+
+#create the ggplot
+m_by_e <- ggplot(rc_data, 
+                 aes(x=ELEV_DEM, y=pMAST, color=pMAST)) + geom_point(size=4, alpha=0.8, pch=10)+
+  #creates a color scale gradiant and this is in grey
+  scale_colour_gradient(
+    low = "grey30",
+    high = "grey90",
+    na.value = "grey50") +
+  #changes the labels in the plot
+  xlab("Elevation (m)") +
+  ylab("Mean annual soil temp (degrees C)") +
+  labs(title = "Reynolds Creek CZO", 
+       subtitle = "Soil temperature by elevation/n(0-30 cm soil depth)",
+       color=expression(atop(bold("Temp"),"(degrees C)"))) +
+  p_theme
+# run the object to get the plot
+m_by_e
+
+# save the plot as a high resolution png
+png(file="m_by_e2.png", width=6000, height=3000, units="px", res=600)
+m_by_e
+dev.off()
