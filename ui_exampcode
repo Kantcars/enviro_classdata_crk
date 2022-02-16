@@ -1,0 +1,31 @@
+#A sidebarLayout(): for placing a sidebarPanel() of inputs alongside a mainPanel() output content.
+
+#Custom layouts using Shiny’s grid layout system (i.e., fluidRow() & column()).
+
+#Segmenting layouts using the tabsetPanel() and navlistPanel() functions.
+
+#Creating applications with multiple top-level components using the navbarPage() function.
+
+
+
+#install.packages("shiny")
+library(shiny)
+
+ui <- fluidPage(
+  
+  titlePanel("Hello Shiny!"),
+  
+  sidebarLayout(
+    
+    sidebarPanel(
+      sliderInput(
+        "bins", label = "Number of bins:",
+        min = 1, value = 30, max = 50
+      )
+    ),
+    
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
