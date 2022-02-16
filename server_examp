@@ -1,0 +1,32 @@
+germdat <- read.csv("C:/Users/81hoc/OneDrive/Desktop/EnviroData/germdata.csv")
+
+
+
+# Define server logic to plot various variables against germination
+server <- function(input, output) {
+  
+  # Histogram of germination data
+  # with requested number of bins
+  output$distPlot <- renderPlot({
+    
+    x    <- germdat$X81
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    hist(x, breaks = bins, col = "blue", border = "white",
+         xlab = "Days of Cold Strat",
+         main = "Number of Seeds Germinated")
+    
+  })
+  
+  output$distPlot2 <- renderPlot({
+    
+    x    <- germdat$X81
+    bins <- seq(min(x), max(x), length.out = (input$bins + 1)*2)
+    
+    hist(x, breaks = bins, col = "blue", border = "white",
+         xlab = "Days of Cold Strat",
+         main = "Number of Seeds Germinated")
+    
+  })
+  
+}
